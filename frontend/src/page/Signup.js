@@ -3,6 +3,7 @@ import loginSignupImage from "../assest/login-animation.gif";
 import { BiShow, BiHide } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
 import { ImagetoBase64 } from "../utility/imagetoBase64";
+import { toast } from "react-hot-toast";
 
 function Signup() {
   const navigate = useNavigate();
@@ -66,7 +67,11 @@ function Signup() {
 
         const dataRes = await fetchData.json()
         console.log(dataRes)
-        alert("Successfull");
+        //alert(dataRes.message);
+        toast(dataRes.message)
+        if(dataRes.alert){
+          navigate("/login");
+        }
         //navigate("/login");
       } else {
         alert("Password and confirm password not equal");

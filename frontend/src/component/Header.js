@@ -4,11 +4,24 @@ import { Link } from "react-router-dom";
 import { HiOutlineUserCircle } from "react-icons/hi2";
 import { BsCartFill } from "react-icons/bs";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutRedux } from "../redux/userSlice";
+import toast from "react-hot-toast";
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
-  const handleShowMenu = () =>{
-    setShowMenu(preve => !preve)
+  const userData = useSelector((state) => state.user);
+  console.log(userData);
+  const dispatch = useDispatch()
+
+
+  const handleShowMenu = () => {
+    setShowMenu((preve) => !preve);
+  };
+
+  const handleLogout = ()=>{
+    dispatch(logoutRedux())
+    toast("Logout successfull")
   }
 
   return (
@@ -36,13 +49,31 @@ const Header = () => {
             </div>
           </div>
           <div className="text-slate-600" onClick={handleShowMenu}>
-            <div className="text-3xl cursor-pointer">
-              <HiOutlineUserCircle />
+            <div className="text-3xl cursor-pointer w-8 h-8 rounded-full overflow-hidden drop-shadow-md">
+              {userData.image ? (
+                <img src={userData.image} className="h-full w-full" />
+              ) : (
+                <HiOutlineUserCircle />
+              )}
             </div>
             {showMenu && (
-              <div className="absolute right-2 bg-white py-2 px-2 shadow drop-shadow-md flex flex-col">
-                <Link to={"newproduct"} className="whitespace-nowrap cursor-pointer">New Product</Link>
-                <Link to={"login"} className="whitespace-nowrap cursor-pointer">LOGIN</Link>
+              <div className="absolute right-2 bg-white py-2 shadow drop-shadow-md flex flex-col min-w-[120px] text-center">
+                <Link
+                  to={"newproduct"}
+                  className="whitespace-nowrap cursor-pointer px-2 "
+                >
+                  New Product
+                </Link>
+                {userData.image ? (
+                  <p className="cursor-pointer text-white px-2 bg-red-500" onClick={handleLogout}>Logout</p>
+                ) : (
+                  <Link
+                    to={"login"}
+                    className="whitespace-nowrap cursor-pointer px-2"
+                  >
+                    LOGIN
+                  </Link>
+                )}
               </div>
             )}
           </div>

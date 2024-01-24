@@ -82,13 +82,13 @@ app.post("/login", async (req, res) => {
     const result = await userModel.findOne({ email: email });
 
     if (result) {
-        const dataSend = {
-            _id: result._id,
-            firstName: result.firstName,
-            lastName: result.lastName,
-            email: result.email,
-            image: result.image,
-          };
+      const dataSend = {
+        _id: result._id,
+        firstName: result.firstName,
+        lastName: result.lastName,
+        email: result.email,
+        image: result.image,
+      };
       console.log(dataSend);
       res.send({ message: "Login successfully", alert: true, data: dataSend });
     } else {
@@ -100,6 +100,25 @@ app.post("/login", async (req, res) => {
   }
 });
 
+//Product section
+const schemaProduct = mongoose.Schema({
+  name: String,
+  category: String,
+  image: String,
+  price: String,
+  description: String,
+});
+
+const productModel = mongoose.model("product", schemaProduct)
+
+//save product in data
+//api
+app.post("/uploadProduct",async(req,res)=>{
+  console.log(req.body)
+  const data = await productModel(req.body)
+  const datasave = await data.save()
+  res.send({message:"Upload successfull"})
+})
 
 //server running
 app.listen(PORT, () => console.log("Server ir running at port:" + PORT));

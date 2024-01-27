@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import HomeCard from "../component/HomeCard";
 import { useSelector } from "react-redux";
 import CardFeature from "../component/CardFeature";
@@ -30,6 +30,24 @@ const Home = () => {
 
   const categoryList = [...new Set(productData.map(el =>el.category))]
   console.log(categoryList)
+
+  //Filter data
+  const [filterby, setFilterBy] = useState("")
+  const [dataFilter, setDataFilter] = useState([])
+
+  useEffect(()=>{
+    setDataFilter(productData)
+  },[productData])
+
+
+  const handleFilterProduct = (category) => {
+    const filter = productData.filter(el =>el.category.toLowerCase() ===category.toLowerCase())
+    setDataFilter(()=>{
+      return[
+        ...filter
+      ]
+    })
+  }
   return (
     <div className="p-2 md:p-4">
       <div className="md:flex gap-4 py-2">
@@ -132,6 +150,22 @@ const Home = () => {
             })
           }
                
+        </div>
+        <div className="flex flex-wrap justify-center gap-4 my-4">
+              {
+                dataFilter.map(el => {
+                  return(
+                    <CardFeature 
+                    key={el._id}
+                    //sid={el._id}
+                    name={el.name}
+                    category={el.category}
+                    price={el.price}
+                    image={el.image}
+                    />
+                  )
+                })
+              }
         </div>
       </div>
     </div>

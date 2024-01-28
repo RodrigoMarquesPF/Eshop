@@ -26,6 +26,8 @@ const AllProduct = ({heading}) => {
       ]
     })
   }
+
+  const loadingArrayFeature = new Array(10).fill(null);
   return (
     <div className="my-5">
     <h2 className="font-bold text-2xl text-slate-800 mb-4">
@@ -34,17 +36,20 @@ const AllProduct = ({heading}) => {
 
     <div className="flex gap-4 justify-center overflow-scroll scrollbar-none">
       {
-        categoryList[0] && categoryList.map(el =>{
+        categoryList[0] ? (categoryList.map(el =>{
           return(
             <FilterProduct category={el} onClick={()=>handleFilterProduct(el)}/>
           )
-        })
+        })):
+        (<div className="min-h-[150px] flex justify-center items-center">
+        <p>Loading...</p>
+        </div>)
       }
            
     </div>
     <div className="flex flex-wrap justify-center gap-4 my-4">
           {
-            dataFilter.map(el => {
+            dataFilter[0] ? dataFilter.map(el => {
               return(
                 <CardFeature 
                 key={el._id}
@@ -56,6 +61,11 @@ const AllProduct = ({heading}) => {
                 />
               )
             })
+            :
+            loadingArrayFeature.map((el) => (
+              <CardFeature loading="Loading..." />
+            ))
+        
           }
     </div>
   </div>

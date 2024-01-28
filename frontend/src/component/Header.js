@@ -23,7 +23,8 @@ const Header = () => {
     toast("Logout successfull");
   };
 
-  console.log(process.env.REACT_APP_ADMIN_EMAIL);
+  const cartItemNumber =useSelector((state)=>state.product.cartItem)
+  //console.log(process.env.REACT_APP_ADMIN_EMAIL);
   return (
     <header className="fixed shadow-md w-full h-16 px-2 md:px-4 z-50 bg-white">
       {/*desktop*/}
@@ -45,7 +46,7 @@ const Header = () => {
           <div className="text-2xl text-slate-600 relative">
             <Link to={"cart"}><BsCartFill />
             <div className="absolute -top-1 -right-1 text-white bg-red-500 h-4 w-4 rounded-full m-0 p-0 text-sm text-center">
-              0
+              {cartItemNumber.length}
             </div>
             </Link>
           </div>

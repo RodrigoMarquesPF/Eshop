@@ -1,10 +1,12 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-const CartFeature = ({ image, name, price, category, loading }) => {
+const CartFeature = ({ image, name, price, category, loading,id }) => {
   return (
     <div className="w-full min-w-[200px] max-w-[200px] bg-white hover:shadow-lg drop-shadow-lg py-5 px-4 cursor-pointer flex flex-col ">
       {image ? (
         <>
+        <Link to={`menu/${id}`}>
           <div className="h-28 flex flex-col justify-center items-center">
             <img src={image} className="h-full" />
           </div>
@@ -19,6 +21,7 @@ const CartFeature = ({ image, name, price, category, loading }) => {
           <button className="bg-yellow-500 py-1 mt-2 rounded hover:bg-yellow-600 w-full">
             Adicionar ao Carrinho
           </button>
+          </Link>
         </>
       ) : (
         <div className="min-h-[150px] flex justify-center items-center">
@@ -26,6 +29,7 @@ const CartFeature = ({ image, name, price, category, loading }) => {
             </div>
       )}
     </div>
+    
   );
 };
 

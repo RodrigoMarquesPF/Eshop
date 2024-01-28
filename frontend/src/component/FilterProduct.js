@@ -1,9 +1,9 @@
 import React from "react";
 import { CiForkAndKnife } from "react-icons/ci";
 
-const FilterProduct = ({category}) => {
+const FilterProduct = ({category,onClick}) => {
   return (
-    <div>
+    <div onClick={onClick}>
       <div className="text-3xl p-5  rounded-full cursor-pointer bg-yellow-500">
         <CiForkAndKnife />
       </div>

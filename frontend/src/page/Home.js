@@ -145,7 +145,7 @@ const Home = () => {
           {
             categoryList[0] && categoryList.map(el =>{
               return(
-                <FilterProduct category={el}/>
+                <FilterProduct category={el} onClick={()=>handleFilterProduct(el)}/>
               )
             })
           }
@@ -157,7 +157,7 @@ const Home = () => {
                   return(
                     <CardFeature 
                     key={el._id}
-                    //sid={el._id}
+                    id={el._id}
                     name={el.name}
                     category={el.category}
                     price={el.price}

@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import CardFeature from "../component/CardFeature";
 import { GrPrevious, GrNext } from "react-icons/gr";
 import FilterProduct from "../component/FilterProduct";
+import AllProduct from "../component/AllProduct";
 
 
 const Home = () => {
@@ -28,26 +29,9 @@ const Home = () => {
     slideProductRef.current.scrollLeft -= 200;
   };
 
-  const categoryList = [...new Set(productData.map(el =>el.category))]
-  console.log(categoryList)
+ 
 
-  //Filter data
-  const [filterby, setFilterBy] = useState("")
-  const [dataFilter, setDataFilter] = useState([])
-
-  useEffect(()=>{
-    setDataFilter(productData)
-  },[productData])
-
-
-  const handleFilterProduct = (category) => {
-    const filter = productData.filter(el =>el.category.toLowerCase() ===category.toLowerCase())
-    setDataFilter(()=>{
-      return[
-        ...filter
-      ]
-    })
-  }
+  
   return (
     <div className="p-2 md:p-4">
       <div className="md:flex gap-4 py-2">
@@ -81,6 +65,7 @@ const Home = () => {
                 return (
                   <HomeCard
                     key={el._id}
+                    id={el._id}
                     image={el.image}
                     name={el.name}
                     price={el.price}
@@ -136,38 +121,10 @@ const Home = () => {
               ))}
         </div>
       </div>
-      <div className="my-5">
-        <h2 className="font-bold text-2xl text-slate-800 mb-4">
-          Seus Produtos
-        </h2>
+        
+      <AllProduct heading={"Seus Produtos"}/>
 
-        <div className="flex gap-4 justify-center overflow-scroll scrollbar-none">
-          {
-            categoryList[0] && categoryList.map(el =>{
-              return(
-                <FilterProduct category={el} onClick={()=>handleFilterProduct(el)}/>
-              )
-            })
-          }
-               
-        </div>
-        <div className="flex flex-wrap justify-center gap-4 my-4">
-              {
-                dataFilter.map(el => {
-                  return(
-                    <CardFeature 
-                    key={el._id}
-                    id={el._id}
-                    name={el.name}
-                    category={el.category}
-                    price={el.price}
-                    image={el.image}
-                    />
-                  )
-                })
-              }
-        </div>
-      </div>
+
     </div>
   );
 };

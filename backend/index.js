@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv").config();
+const Stripe = require('stripe')
 
 const app = express();
 app.use(cors());
@@ -42,12 +43,12 @@ app.get("/", (req, res) => {
 
 //signup
 app.post("/signup", async (req, res) => {
-  console.log(req.body);
+  //console.log(req.body);
   const { email } = req.body;
 
   try {
     const result = await userModel.findOne({ email: email });
-    console.log(result);
+    //console.log(result);
     //console.log(result)
     // console.log(err)
     if (result) {
@@ -75,7 +76,7 @@ app.post("/signup", async (req, res) => {
 //api login
 // API Login
 app.post("/login", async (req, res) => {
-  console.log(req.body);
+  //console.log(req.body);
   const { email } = req.body;
 
   try {
@@ -114,7 +115,7 @@ const productModel = mongoose.model("product", schemaProduct)
 //save product in data
 //api
 app.post("/uploadProduct",async(req,res)=>{
-  console.log(req.body)
+  //console.log(req.body)
   const data = await productModel(req.body)
   const datasave = await data.save()
   res.send({message:"Upload successfull"})
@@ -125,6 +126,57 @@ app.post("/uploadProduct",async(req,res)=>{
 app.get("/product",async(req,res)=>{
   const data =await productModel.find({})
   res.send(JSON.stringify(data))
+})
+
+
+//Payment getWay//
+console.log(process.env.STRIPE_SECRET_KEY)
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
+
+app.post("/checkout-payment",async(req,res)=>{
+  //console.log(req.body)
+  
+  try {
+
+    const params ={
+        submit_type:'pay',
+        mode:"payment",
+        payment_method_types: ['card'],
+        billing_address_collection:"auto",
+        shipping_options :[{shipping_rate: "shr_1Oe4IOIHV0s6lmEpFJzvwslM"}],
+
+        line_items: req.body.map((item)=>{
+          return{
+            price_data :{
+              currency: "brl",
+              product_data:{
+                name: item.name,
+                //images :[item.image]
+              },
+              unit_amount:item.price * 100,
+            },
+            adjustable_quantity:{
+              enabled:true,
+              minimum:1,
+            },
+            quantity: item.qty
+
+          }
+        }),
+        success_url :`${process.env.FRONTEND_URL}/success`,
+        cancel_url:`${process.env.FRONTEND_URL}/cancel`,
+    }
+  
+    const session = await stripe.checkout.sessions.create(params)
+    console.log(session)
+    res.status(200).json(session.id)
+    //res.send({message: "payment gateway", success : true})
+  
+    
+  } catch (err) {
+    res.status(err.statusCode || 500).json(err.message)
+  }
 })
 
 //server running

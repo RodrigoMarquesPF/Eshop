@@ -39,7 +39,7 @@ const AllProduct = ({ heading }) => {
               <FilterProduct
                 category={el}
                 key={el}
-                isActive={el === filterby}
+                isActive={el.toLowerCase() === filterby.toLowerCase()}
                 onClick={() => handleFilterProduct(el)}
               />
             );

@@ -45,7 +45,7 @@ const Cart = () => {
       toast("Redirecionado para o pagamento...!");
       stripePromise.redirectToCheckout({ sessionId: data });
     } else {
-      toast("Você não esta logado¹");
+      toast("Você não esta logado!!!");
       setTimeout(() => {
         navigate("/login");
       }, 1000);

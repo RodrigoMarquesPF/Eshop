@@ -1,8 +1,8 @@
-#### Eshop
+# Eshop
 
-### React, Redux, Nodejs, MongoDB, Express
+## React, Redux, Nodejs, MongoDB, Express
 
-## Executando o projeto:
+### Executando o projeto:
 
 1 - Abra dois terminais, um para o backend e outro para o frontend.
 
